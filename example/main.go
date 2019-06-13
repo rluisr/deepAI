@@ -24,7 +24,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	nudityResponse, err = c.DetectWithFile(data, "test.jpg")
+	nudityResponse, err = c.DetectWithFile(data)
 	if err != nil {
 		panic(err)
 	}

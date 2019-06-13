@@ -2,10 +2,8 @@ package deepAI
 
 import (
 	"bytes"
-	"mime/multipart"
-	"os"
-
 	"deepAI/models"
+	"mime/multipart"
 )
 
 func (c *Client) DetectWithURL(url string) (models.NudityResponse, error) {
@@ -32,17 +30,11 @@ func (c *Client) DetectWithURL(url string) (models.NudityResponse, error) {
 	return nudityResponse, nil
 }
 
-func (c *Client) DetectWithFile(data []byte, fileName string) (models.NudityResponse, error) {
+func (c *Client) DetectWithFile(data []byte) (models.NudityResponse, error) {
 	var b bytes.Buffer
 	w := multipart.NewWriter(&b)
 
-	f, err := os.Open(fileName)
-	if err != nil {
-		return models.NudityResponse{}, err
-	}
-	defer f.Close()
-
-	fw, err := w.CreateFormFile("image", fileName)
+	fw, err := w.CreateFormFile("image", "foo")
 	if err != nil {
 		return models.NudityResponse{}, err
 	}
