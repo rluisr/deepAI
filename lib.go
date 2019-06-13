@@ -2,17 +2,16 @@ package deepAI
 
 import (
 	"bytes"
-	"deepAI/models"
 	"encoding/json"
 	"errors"
 	"mime/multipart"
 	"net/http"
 )
 
-func (c *Client) request(buf bytes.Buffer, w *multipart.Writer) (models.NudityResponse, error) {
+func (c *Client) request(buf bytes.Buffer, w *multipart.Writer) (NudityResponse, error) {
 	req, err := http.NewRequest(http.MethodPost, NudityURL, &buf)
 	if err != nil {
-		return models.NudityResponse{}, err
+		return NudityResponse{}, err
 	}
 
 	req.Header.Set("Content-Type", w.FormDataContentType())
@@ -20,24 +19,24 @@ func (c *Client) request(buf bytes.Buffer, w *multipart.Writer) (models.NudityRe
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return models.NudityResponse{}, err
+		return NudityResponse{}, err
 	}
 	defer resp.Body.Close()
 
 	buf = bytes.Buffer{}
 	_, err = buf.ReadFrom(resp.Body)
 	if err != nil {
-		return models.NudityResponse{}, err
+		return NudityResponse{}, err
 	}
 
 	if resp.StatusCode != 200 {
-		return models.NudityResponse{}, errors.New(buf.String())
+		return NudityResponse{}, errors.New(buf.String())
 	}
 
-	var nudityResponse models.NudityResponse
+	var nudityResponse NudityResponse
 	err = json.Unmarshal(buf.Bytes(), &nudityResponse)
 	if err != nil {
-		return models.NudityResponse{}, err
+		return NudityResponse{}, err
 	}
 	return nudityResponse, nil
 }

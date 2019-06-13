@@ -1,4 +1,4 @@
-package models
+package deepAI
 
 type NudityResponse struct {
 	Output NudityOutputResponse `json:"output"`
